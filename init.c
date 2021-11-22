@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 01:01:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/19 01:02:35 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/22 17:09:12 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	check(int argc, char	**argv)
 	if (ft_strlen(argv[1]) < 5)
 		error_message("ERROR: Wrong file name.");
 	if (argv[1][ft_strlen(argv[1]) - 1] != 'f'
-		&& argv[1][ft_strlen(argv[1]) - 2] != 'd'
-		&& argv[1][ft_strlen(argv[1]) - 3] != 'f'
-		&& argv[1][ft_strlen(argv[1]) - 4] != '.')
+		|| argv[1][ft_strlen(argv[1]) - 2] != 'd'
+		|| argv[1][ft_strlen(argv[1]) - 3] != 'f'
+		|| argv[1][ft_strlen(argv[1]) - 4] != '.')
 		error_message("ERROR: Wrong file name.");
 }
 
@@ -68,7 +68,7 @@ static t_map	get_str_map(char	*filename)
 		mapa.map[i++] = ft_strdup(line);
 		free(line);
 	}
-	mapa.y = i - 1;
+	mapa.y = i;
 	mapa.map[i] = NULL;
 	close(fd);
 	return (mapa);
@@ -90,6 +90,7 @@ static void	get_coo(t_list	**lst, char	**nums, int y)
 		i++;
 		ft_lstadd_back(lst, cur);
 	}
+	free_mem(nums);
 }
 
 t_list	*make_coo_list(char	*filename, t_map *map)

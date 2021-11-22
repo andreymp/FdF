@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/22 18:07:11 by jobject           #+#    #+#             */
+/*   Updated: 2021/11/22 18:07:54 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
@@ -10,9 +22,11 @@
 # include <fcntl.h>
 
 # define HEIGHT 1000
-# define WIDTH 1100
+# define WIDTH 1000
 
 # define ESC 53
+
+# define ANGLE 0.523599
 
 typedef struct s_win
 {
@@ -32,18 +46,18 @@ typedef struct s_map
 	int		x;
 }				t_map;
 
-typedef struct	s_paint
+typedef struct s_paint
 {
-	int	x;
-	int	y;
-	int	z;
-	int	xo;
-	int yo;
-	int	zo;
+	float	x;
+	float	y;
+	float	z;
+	float	xo;
+	float	yo;
+	float	zo;
 }				t_paint;
 
 int		esc(int keyhook);
-int 	eexit(int zero);
+int		eexit(int zero);
 void	error_message(char	*message);
 void	check(int argc, char	**argv);
 void	win_init(t_win	*win);
@@ -58,7 +72,5 @@ void	zero_init(t_paint	**paint);
 void	my_mlx_pixel_put(t_win *win, int x, int y, int color);
 void	do_init_image(t_win *win);
 void	do_iso(t_paint	*paint);
-void	do_iso2(t_paint	*paint);
-void	iso(int	*x, int	*y, int z);
 
 #endif

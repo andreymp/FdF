@@ -1,7 +1,7 @@
 NAME =	fdf
 
 CC =	gcc
-CFLAGS =	-Wall -Wextra -Werror -MMD -o3
+CFLAGS =	-Wall -Wextra -Werror -MMD
 
 RM =	rm -rf
 
@@ -22,10 +22,9 @@ INC =	-I fdf.h \
 OBJS =	$(SRC:.c=.o)
 DEP =	$(SRC:.c=.d)
 
-#MLXFLAGS =	-lft -lm -lmx -lXext -lX11
 LD_FLAGS =	-L libft -L minilibx
 
-.PHONY :	all clean re fclean
+.PHONY :	all clean re fclean norm
 
 .c.o :		
 		${CC} ${CFLAGS} ${INC} -c $< -o ${<:.c=.o}

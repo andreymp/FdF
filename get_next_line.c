@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 16:56:16 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/15 16:50:50 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/22 17:07:28 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,7 @@ char	*get_next_line(int fd)
 		if (r < 0 || (!r && !res))
 			return (NULL);
 		if (!r && !*res)
-		{
-			free(res);
 			return (NULL);
-		}
 		*(buf + r) = '\0';
 		res = ft_strjoingnl(res, buf);
 	}

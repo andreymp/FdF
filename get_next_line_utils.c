@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 16:56:06 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/16 19:37:09 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:07:05 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,6 @@ char	*ft_strjoingnl(char	*s1, char const	*s2)
 		ft_memmovegnl(str + len1, s2, len2);
 		*(str + len1 + len2) = '\0';
 	}
-	// free(s1);
+	free(s1);
 	return (str);
 }

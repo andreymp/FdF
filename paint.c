@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 01:03:09 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/19 01:09:45 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:05:49 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	init_zoom(t_paint	*paint)
 {
-	paint->x *= 35;
-	paint->y *= 35;
-	paint->z *= 25;
-	paint->xo *= 35;
-	paint->yo *= 35;
-	paint->zo *= 25;
+	paint->x *= 30;
+	paint->y *= 30;
+	paint->z *= 30;
+	paint->xo *= 30;
+	paint->yo *= 30;
+	paint->zo *= 30;
 }
 
 void	init_beg(t_paint	*paint)
@@ -40,14 +40,19 @@ void	zero_init(t_paint	**paint)
 	(*paint)->zo = 0;
 }
 
-void	do_iso(t_paint	*paint)
+static void	iso(float	*x, float	*y, float z)
 {
-	iso(&paint->x, &paint->y, paint->zo);
-	iso(&paint->xo, &paint->yo, paint->zo);
+	float	old_x;
+	float	old_y;
+
+	old_x = *x;
+	old_y = *y;
+	*x = (old_x - old_y) * cos(ANGLE);
+	*y = (old_x + old_y) * sin(ANGLE) - z;
 }
 
-void	do_iso2(t_paint	*paint)
+void	do_iso(t_paint	*paint)
 {
-	iso(&paint->x, &paint->y, paint->zo);
-	iso(&paint->xo, &paint->yo, paint->z);
+	iso(&paint->x, &paint->y, paint->z);
+	iso(&paint->xo, &paint->yo, paint->zo);
 }

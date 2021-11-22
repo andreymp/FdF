@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 01:04:39 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/19 01:09:38 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:06:28 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,24 @@ void	win_init(t_win	*win)
 	mlx_hook(win->mlx_win, 2, 1L << 0, esc, win);
 }
 
-void	iso(int	*x, int	*y, int z)
-{
-	*x = (*x - *y) * cos(0.77);
-	*y = (*x + *y) * sin(0.77) - z;
-}
-
-void	draw_line1(t_list	*lst, t_paint	p, t_win	*win)
+void	draw_line(t_list	*lst, t_paint	p, t_win	*win)
 {
 	float	i;
 	float	step;
 
-	i = 0;
+	i = 0.0;
 	init_zo(&p, lst);
 	init_zoom(&p);
 	do_iso(&p);
 	init_beg(&p);
-	step = 1 / (fmaxf(abs(p.xo - p.x), abs(p.yo - p.y)) * 3);
+	step = 1 / fmaxf(fabsf(p.xo - p.x), fabsf(p.yo - p.y) * 35);
 	while (i <= 1)
 	{
 		p.x += (i * (p.xo - p.x));
 		p.y += (i * (p.yo - p.y));
 		if (p.x < WIDTH && p.x >= 0 && p.y < HEIGHT && p.y >= 0)
 		{
-			if (p.zo > 0)
+			if (p.zo || p.z)
 				my_mlx_pixel_put(win, p.x, p.y, 0x006effff);
 			else
 				my_mlx_pixel_put(win, p.x, p.y, 0x00ff1694);
@@ -52,28 +46,19 @@ void	draw_line1(t_list	*lst, t_paint	p, t_win	*win)
 	}
 }
 
-void	draw_line2(t_list	*lst, t_paint	p, t_win	*win)
+static void	to_draw(t_paint	*p, t_list	*lst, t_win	*win, t_map	*map)
 {
-	float	i;
-	float	step;
-
-	i = 0;
-	init_zo(&p, lst);
-	init_zoom(&p);
-	do_iso2(&p);
-	init_beg(&p);
-	step = 9 / (fmaxf(abs(p.xo - p.x), abs(p.yo - p.y)) * 100);
-	while (i <= 1)
+	if (p->x < map->x - 1)
 	{
-		p.x += (i * (p.xo - p.x));
-		p.y += (i * (p.yo - p.y));
-		p.z += (i * (p.zo - p.z));
-		if (p.x < WIDTH && p.x >= 0 && p.y < HEIGHT && p.y >= 0)
-		{
-			if (p.zo != 0)
-				my_mlx_pixel_put(win, p.x, p.y, 0x006effff);
-		}
-		i += step;
+		p->xo = p->x + 1;
+		p->yo = p->y;
+		draw_line(lst, *p, win);
+	}
+	if (p->y < map->y - 1)
+	{
+		p->xo = p->x;
+		p->yo = p->y + 1;
+		draw_line(lst, *p, win);
 	}
 }
 
@@ -85,30 +70,15 @@ void	draw(t_list	*lst, t_win	*win, t_map	*map)
 	zero_init(&p);
 	do_init_image(win);
 	p->y = 0;
-	map->x = ft_lstsize(lst) / map->y - 1;
+	map->x = ft_lstsize(lst) / map->y;
 	while (lst && p->y < map->y)
 	{
 		p->x = 0;
 		while (lst && p->x < map->x)
 		{
-			if (p->x < map->x - 1)
-			{
-				p->xo = p->x + 1;
-				p->yo = p->y;
-				draw_line1(lst, *p, win);
-				draw_line2(lst, *p, win);
-			}
-			if (p->y < map->y - 1)
-			{
-				p->xo = p->x;
-				p->yo = p->y + 1;
-				draw_line1(lst, *p, win);
-				draw_line2(lst, *p, win);
-			}
-			lst = lst->next;
+			to_draw(p, lst, win, map);
 			p->x++;
 		}
-		lst = lst->next;
 		p->y++;
 	}
 	free (p);
